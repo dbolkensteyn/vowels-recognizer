@@ -18,7 +18,7 @@ public class AudioSignalViewer extends JFrame {
     setLocationByPlatform(true);
     setSize(new Dimension(1200, 300));
     setDefaultCloseOperation(EXIT_ON_CLOSE);
-    SignalPlot signalPlot = new SignalPlot(audioSignal.data[0], -1, 1);
+    SignalPlot signalPlot = new SignalPlot(audioSignal.data, -1, 1);
     signalPlot.setZoomModeHorizontal(true);
     setContentPane(signalPlot);
   }

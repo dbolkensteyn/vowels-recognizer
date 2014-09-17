@@ -15,6 +15,7 @@ package com.sonarsource.bdd.dbjh;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.File;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -42,21 +43,15 @@ public class AudioIo {
     * The audio signal sample values, per channel separately.
     * The normal value range is -1 .. 1.
     */
-    public float[][] data;
+    public float[] data;
 
     /**
     * Returns the signal length in samples.
     */
     public int getLength() {
-      return data[0].length;
-    }
-
-    /**
-    * Returns the number of channels.
-    */
-    public int getChannels() {
       return data.length;
     }
+
   }
 
   // ------------------------------------------------------------------------------
@@ -75,15 +70,15 @@ public class AudioIo {
     signal.samplingRate = Math.round(format.getSampleRate());
     int frameSize = format.getFrameSize();
     int channels = format.getChannels();
+    if (channels > 1) {
+      throw new IllegalArgumentException("Unable to load a wav file with more than 1 channel");
+    }
     long totalFramesLong = stream.getFrameLength();
     if (totalFramesLong > Integer.MAX_VALUE) {
       throw new Exception("Sound file too long.");
     }
     int totalFrames = (int) totalFramesLong;
-    signal.data = new float[channels][];
-    for (int channel = 0; channel < channels; channel++) {
-      signal.data[channel] = new float[totalFrames];
-    }
+    signal.data = new float[totalFrames];
     final int blockFrames = 0x4000;
     byte[] blockBuf = new byte[frameSize * blockFrames];
     int pos = 0;
@@ -104,7 +99,7 @@ public class AudioIo {
   * Plays an audio signal on the default system audio output device.
   */
   public static void play(AudioSignal signal) throws Exception {
-    int channels = signal.getChannels();
+    int channels = 1;
     AudioFormat format = new AudioFormat(signal.samplingRate, 16, channels, true, false);
     int frameSize = format.getFrameSize();
     SourceDataLine line = AudioSystem.getSourceDataLine(format);
@@ -133,7 +128,7 @@ public class AudioIo {
   */
   public static void play(float[] buf, int samplingRate) throws Exception {
     AudioSignal signal = new AudioSignal();
-    signal.data = new float[][] {buf};
+    signal.data = buf;
     signal.samplingRate = samplingRate;
     play(signal);
   }
@@ -141,14 +136,11 @@ public class AudioIo {
   /**
   * A utility routine to unpack the data of a Java Sound audio stream.
   */
-  public static void unpackAudioStreamBytes(AudioFormat format, byte[] inBuf, int inPos, float[][] outBufs, int outPos, int frames) {
-    int channels = format.getChannels();
+  public static void unpackAudioStreamBytes(AudioFormat format, byte[] inBuf, int inPos, float[] outBufs, int outPos, int frames) {
+    int channels = 1;
     boolean bigEndian = format.isBigEndian();
     int sampleBits = format.getSampleSizeInBits();
     int frameSize = format.getFrameSize();
-    if (outBufs.length != channels) {
-      throw new IllegalArgumentException("Number of channels not equal to number of buffers.");
-    }
     if (format.getEncoding() != AudioFormat.Encoding.PCM_SIGNED) {
       throw new UnsupportedOperationException("Audio stream format not supported (not signed PCM).");
     }
@@ -161,7 +153,7 @@ public class AudioIo {
     }
     float maxValue = (float) ((1 << (sampleBits - 1)) - 1);
     for (int channel = 0; channel < channels; channel++) {
-      float[] outBuf = outBufs[channel];
+      float[] outBuf = outBufs;
       int p0 = inPos + channel * sampleSize;
       for (int i = 0; i < frames; i++) {
         int v = unpackSignedInt(inBuf, p0 + i * frameSize, sampleBits, bigEndian);
@@ -173,14 +165,11 @@ public class AudioIo {
   /**
   * A utility routine to pack the data for a Java Sound audio stream.
   */
-  public static void packAudioStreamBytes(AudioFormat format, float[][] inBufs, int inPos, byte[] outBuf, int outPos, int frames) {
-    int channels = format.getChannels();
+  public static void packAudioStreamBytes(AudioFormat format, float[] inBufs, int inPos, byte[] outBuf, int outPos, int frames) {
+    int channels = 1;
     boolean bigEndian = format.isBigEndian();
     int sampleBits = format.getSampleSizeInBits();
     int frameSize = format.getFrameSize();
-    if (inBufs.length != channels) {
-      throw new IllegalArgumentException("Number of channels not equal to number of buffers.");
-    }
     if (format.getEncoding() != AudioFormat.Encoding.PCM_SIGNED) {
       throw new UnsupportedOperationException("Audio stream format not supported (not signed PCM).");
     }
@@ -193,7 +182,7 @@ public class AudioIo {
     }
     int maxValue = (1 << (sampleBits - 1)) - 1;
     for (int channel = 0; channel < channels; channel++) {
-      float[] inBuf = inBufs[channel];
+      float[] inBuf = inBufs;
       int p0 = outPos + channel * sampleSize;
       for (int i = 0; i < frames; i++) {
         float clipped = Math.max(-1, Math.min(1, inBuf[inPos + i]));
