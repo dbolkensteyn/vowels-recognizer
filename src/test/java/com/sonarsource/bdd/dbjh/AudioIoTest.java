@@ -1,7 +1,5 @@
 package com.sonarsource.bdd.dbjh;
 
-import com.sonarsource.bdd.dbjh.AudioIo.AudioSignal;
-
 import org.junit.Test;
 
 

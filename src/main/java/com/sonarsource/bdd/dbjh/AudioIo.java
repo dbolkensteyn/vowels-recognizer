@@ -29,30 +29,7 @@ public class AudioIo {
 
   // ------------------------------------------------------------------------------
 
-  /**
-  * A class for storing an audio signal in memory.
-  */
-  public static class AudioSignal {
-
-    /**
-    * The sampling rate in Hz
-    */
-    public int samplingRate;
-
-    /**
-    * The audio signal sample values, per channel separately.
-    * The normal value range is -1 .. 1.
-    */
-    public float[] data;
-
-    /**
-    * Returns the signal length in samples.
-    */
-    public int getLength() {
-      return data.length;
-    }
-
-  }
+  
 
   // ------------------------------------------------------------------------------
 

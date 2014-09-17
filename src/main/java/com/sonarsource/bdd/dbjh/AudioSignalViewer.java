@@ -1,8 +1,6 @@
 package com.sonarsource.bdd.dbjh;
 
 
-import com.sonarsource.bdd.dbjh.AudioIo.AudioSignal;
-
 import com.sonarsource.bdd.dbjh.swing.SignalPlot;
 
 import java.awt.EventQueue;

@@ -1,7 +1,6 @@
 package com.sonarsource.bdd.dbjh;
 
 import com.google.common.base.Preconditions;
-import com.sonarsource.bdd.dbjh.AudioIo.AudioSignal;
 import org.jtransforms.fft.FloatFFT_1D;
 import org.junit.Test;
 
@@ -11,9 +10,8 @@ public class FourierTest {
   public void forward_fft() throws Exception {
     AudioSignal wavFile = AudioIo.loadWavFile("i_jh_bruyant.wav");
     System.out.println("Sampling: " + wavFile.samplingRate);
-    System.out.println("Channels: " + wavFile.getChannels());
 
-    float[] samples = wavFile.data[0];
+    float[] samples = wavFile.data;
     Preconditions.checkArgument(samples.length % 2 == 0, "Number of samples must be even");
 
     System.out.println("Length: " + samples.length);
