@@ -12,9 +12,12 @@
 
 package com.sonarsource.bdd.dbjh;
 
+import com.sonarsource.bdd.dbjh.dsp.Signal;
+
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.File;
+import java.util.Arrays;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioFileFormat;
@@ -76,6 +79,13 @@ public class AudioIo {
   * Plays an audio signal on the default system audio output device.
   */
   public static void play(AudioSignal signal) throws Exception {
+    int duration = signal.getLength() * 1000 / signal.samplingRate;
+    if (duration < 1000) {
+      // Increase duration to avoid buffer issue with sound card
+      float[] data = new float[signal.samplingRate];
+      System.arraycopy(signal.data, 0, data, 0, signal.getLength());
+      signal = new AudioSignal(data, signal.samplingRate);
+    }
     int channels = 1;
     AudioFormat format = new AudioFormat(signal.samplingRate, 16, channels, true, false);
     int frameSize = format.getFrameSize();
