@@ -15,6 +15,12 @@ public class FormantExtractorTest {
   }
 
   @Test
+  public void o() throws Exception {
+    AudioSignal wavFile = AudioIo.loadWavFile("o_jh_clean.wav");
+    assertThat(extractor.formant(wavFile.data)).isEqualTo(385);
+  }
+
+  @Test
   public void a() throws Exception {
     AudioSignal wavFile = AudioIo.loadWavFile("a_jh_clean.wav");
     assertThat(extractor.formant(wavFile.data)).isEqualTo(784);
