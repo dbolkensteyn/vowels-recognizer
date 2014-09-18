@@ -29,4 +29,10 @@ public class FormantExtractorTest {
     assertThat(extractor.formant(wavFile.data)).isEqualTo(795);
   }
 
+  @Test
+  public void la_440hz() throws Exception {
+    AudioSignal wavFile = AudioIo.loadWavFile("la_440hz.wav");
+    assertThat(extractor.formant(wavFile.data)).isEqualTo(440);
+  }
+
 }
