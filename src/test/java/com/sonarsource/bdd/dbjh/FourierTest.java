@@ -49,7 +49,9 @@ public class FourierTest {
     PeaksExtractor e = new PeaksExtractor(magnitudes, 150);
     System.out.println("Peaks:");
     for (int peak : e.peaks()) {
-      System.out.println("  - " + peak + ", val = " + magnitudes[peak]);
+      if (peak >= 200 && peak <= 3000) {
+        System.out.println("  - " + peak + ", val = " + magnitudes[peak]);
+      }
     }
   }
 
