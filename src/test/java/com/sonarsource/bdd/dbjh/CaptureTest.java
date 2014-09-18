@@ -46,7 +46,7 @@ public class CaptureTest {
     FormantExtractor formantExtractor = new FormantExtractor();
 
     for (int second = 0; second < 20; second++) {
-      while (out.size() < 1 * format.getSampleRate() * (format.getSampleSizeInBits() / 8) * format.getChannels()) {
+      while (out.size() < 0.5 * format.getSampleRate() * (format.getSampleSizeInBits() / 8) * format.getChannels()) {
         // Read the next chunk of data from the TargetDataLine.
         numBytesRead = line.read(data, 0, data.length);
         // Save this chunk of data.

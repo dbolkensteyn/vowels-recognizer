@@ -12,7 +12,7 @@ public class FormantExtractor {
    * Returns the first formant
    */
   public int formant(float[] originalSamples) {
-    Preconditions.checkArgument(originalSamples.length % 2 == 0);
+    Preconditions.checkArgument(originalSamples.length > 0 && originalSamples.length % 2 == 0);
 
     float[] samples = new float[originalSamples.length];
     System.arraycopy(originalSamples, 0, samples, 0, originalSamples.length);
@@ -23,7 +23,7 @@ public class FormantExtractor {
     double[] magnitudes = magnitudes(samples);
     int[] peaks = peaksExtractor.peaks(magnitudes);
 
-    return peaks.length > 0 ? peaks[0] / (originalSamples.length / 44100) : -1;
+    return peaks.length > 0 ? (int) (peaks[0] / (originalSamples.length / 44100.0)) : -1;
   }
 
   private static double[] magnitudes(float[] samples) {
