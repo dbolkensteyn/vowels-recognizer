@@ -11,9 +11,13 @@ import java.util.LinkedList;
  */
 public class PeaksExtractor {
 
-  private final int[] peaks;
+  private final int minimalDistanceBetweenPeaks;
 
-  public PeaksExtractor(final double[] values, int minimalDistanceBetweenPeaks) {
+  public PeaksExtractor(int minimalDistanceBetweenPeaks) {
+    this.minimalDistanceBetweenPeaks = minimalDistanceBetweenPeaks;
+  }
+
+  public int[] peaks(final double[] values) {
     LinkedList<Integer> peaksBuilder = Lists.newLinkedList();
 
     int i = 0;
@@ -62,15 +66,13 @@ public class PeaksExtractor {
 
     });
 
-    peaks = new int[peaksBuilder.size()];
+    int[] peaks = new int[peaksBuilder.size()];
     i = 0;
     for (Integer peak : peaksBuilder) {
       peaks[i] = peak;
       i++;
     }
-  }
 
-  public int[] peaks() {
     return peaks;
   }
 

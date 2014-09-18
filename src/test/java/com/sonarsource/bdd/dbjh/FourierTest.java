@@ -8,11 +8,15 @@ public class FourierTest {
 
   @Test
   public void forward_fft() throws Exception {
-    AudioSignal wavFile = AudioIo.loadWavFile("a_jh_bruyant.wav");
+    AudioSignal wavFile = AudioIo.loadWavFile("i_jh_clean.wav");
     System.out.println("Sampling: " + wavFile.samplingRate);
 
     float[] samples = wavFile.data;
     Preconditions.checkArgument(samples.length % 2 == 0, "Number of samples must be even");
+
+    Fader fader = new Fader();
+    fader.fadeIn(samples, samples.length / 3);
+    fader.fadeOut(samples, samples.length / 3);
 
     System.out.println("Length: " + samples.length);
 
@@ -46,13 +50,12 @@ public class FourierTest {
       magnitudes[freq] = magnitude;
     }
 
-    PeaksExtractor e = new PeaksExtractor(magnitudes, 150);
+    PeaksExtractor e = new PeaksExtractor(150);
     System.out.println("Peaks:");
-    for (int peak : e.peaks()) {
+    for (int peak : e.peaks(magnitudes)) {
       if (peak >= 200 && peak <= 3000) {
         System.out.println("  - " + peak + ", val = " + magnitudes[peak]);
       }
     }
   }
-
 }
