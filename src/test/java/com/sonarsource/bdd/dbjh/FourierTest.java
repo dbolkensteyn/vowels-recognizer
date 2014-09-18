@@ -8,7 +8,7 @@ public class FourierTest {
 
   @Test
   public void forward_fft() throws Exception {
-    AudioSignal wavFile = AudioIo.loadWavFile("i_jh_bruyant.wav");
+    AudioSignal wavFile = AudioIo.loadWavFile("a_jh_bruyant.wav");
     System.out.println("Sampling: " + wavFile.samplingRate);
 
     float[] samples = wavFile.data;
@@ -35,6 +35,22 @@ public class FourierTest {
     }
 
     System.out.println("Max = " + max + ", at k = " + maxK);
+
+    double[] magnitudes = new double[samples.length / 2];
+    for (int freq = 0; freq < magnitudes.length; freq++) {
+      float re = samples[2 * freq];
+      float im = samples[2 * freq + 1];
+
+      double magnitude = Math.sqrt(re * re + im * im);
+
+      magnitudes[freq] = magnitude;
+    }
+
+    PeaksExtractor e = new PeaksExtractor(magnitudes, 150);
+    System.out.println("Peaks:");
+    for (int peak : e.peaks()) {
+      System.out.println("  - " + peak + ", val = " + magnitudes[peak]);
+    }
   }
 
 }
