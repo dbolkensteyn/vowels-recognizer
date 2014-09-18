@@ -52,7 +52,7 @@ public class Population {
       }
     }
     if (random.nextInt(100) <= MUTATION_RATE) {
-      i2 = Individual.randomFormantFrequency(i2);
+      i2 = Individual.randomFormantFrequency(i1);
     }
 
     if (random.nextInt(100) <= MUTATION_RATE) {
@@ -62,7 +62,7 @@ public class Population {
       }
     }
     if (random.nextInt(100) <= MUTATION_RATE) {
-      o2 = Individual.randomFormantFrequency(o2);
+      o2 = Individual.randomFormantFrequency(o1);
     }
 
     if (random.nextInt(100) <= MUTATION_RATE) {
@@ -72,7 +72,7 @@ public class Population {
       }
     }
     if (random.nextInt(100) <= MUTATION_RATE) {
-      a2 = Individual.randomFormantFrequency(a2);
+      a2 = Individual.randomFormantFrequency(a1);
     }
 
     return new Individual(i1, i2, o1, o2, a1, a2);

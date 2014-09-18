@@ -1,30 +1,60 @@
 package com.sonarsource.bdd.dbjh;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.List;
 
 public class GeneticTrainingTest {
 
-  private static final int POPULATION_SIZE = 3;
-  private static final int EVOLUTION_STEPS = 0;
+  private static final int POPULATION_SIZE = 2000;
+  private static final int EVOLUTION_STEPS = 1;
 
   private final FormantExtractor formantExtractor = new FormantExtractor();
 
   @Test
-  public void test() throws Exception {
-    Fitness fitness = loadFitness();
-    GeneticTraining training = new GeneticTraining(new Population(POPULATION_SIZE), fitness);
-    training.evolve(EVOLUTION_STEPS);
+  public void test() {
+    train();
+  }
 
-    System.out.println("Best individual scores: " + training.bestIndividualScore());
+  public GeneticTraining train() {
+    try {
+      Fitness fitness = loadFitness();
+      GeneticTraining training = new GeneticTraining(new Population(POPULATION_SIZE), fitness);
+      training.evolve(EVOLUTION_STEPS);
+
+      System.out.println("Best individual scores: " + training.bestIndividualScore());
+
+      return training;
+    } catch (Exception e) {
+      throw Throwables.propagate(e);
+    }
   }
 
   private Fitness loadFitness() throws Exception {
+    int[] i = loadTrainingFormants(new File("training/i"));
+    int[] o = loadTrainingFormants(new File("training/o"));
+    int[] a = loadTrainingFormants(new File("training/a"));
+
+    System.out.println("i: " + Joiner.on(", ").join(toList(i)));
+    System.out.println("o: " + Joiner.on(", ").join(toList(o)));
+    System.out.println("a: " + Joiner.on(", ").join(toList(a)));
+
     return new Fitness(
-      loadTrainingFormants(new File("training/i")),
-      loadTrainingFormants(new File("training/o")),
-      loadTrainingFormants(new File("training/a")));
+      i,
+      o,
+      a);
+  }
+
+  private List<Integer> toList(int[] array) {
+    List<Integer> result = Lists.newArrayList();
+    for (Integer element : array) {
+      result.add(element);
+    }
+    return result;
   }
 
   private int[] loadTrainingFormants(File folder) throws Exception {

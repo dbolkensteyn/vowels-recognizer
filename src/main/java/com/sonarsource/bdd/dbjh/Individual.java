@@ -60,6 +60,7 @@ public class Individual {
   }
 
   private static int random(int low, int high) {
+    Preconditions.checkArgument(high - low > 0, "low = " + low + ", high = " + high);
     return RANDOM.nextInt(high - low) + low;
   }
 
