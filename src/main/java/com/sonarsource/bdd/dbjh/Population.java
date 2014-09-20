@@ -13,7 +13,7 @@ public class Population {
   private final Individual[] individuals;
 
   public Population(int n) {
-    Preconditions.checkArgument(n > 2, "population too small");
+    Preconditions.checkArgument(n >= 4, "population too small");
 
     individuals = new Individual[n];
     for (int i = 0; i < n; i++) {

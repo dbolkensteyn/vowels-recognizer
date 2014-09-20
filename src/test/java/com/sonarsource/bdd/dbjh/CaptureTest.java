@@ -14,7 +14,6 @@ public class CaptureTest {
 
   @Test
   public void test() throws Exception {
-
     GeneticTraining train = new GeneticTrainingTest().train();
     Individual classifier = train.bestIndividual();
 
@@ -66,7 +65,7 @@ public class CaptureTest {
       out.reset();
 
       int formant = formantExtractor.formant(samples);
-      System.out.println("formant = " + formant + ", got: " + classifier.classify(formant));
+      System.out.println(classifier.classify(formant) + " @ " + formant + "Hz");
     }
   }
 

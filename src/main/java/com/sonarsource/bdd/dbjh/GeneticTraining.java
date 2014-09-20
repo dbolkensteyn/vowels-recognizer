@@ -34,7 +34,8 @@ public class GeneticTraining {
     List<Individual> oldRankedIndividuals = rankIndividuals();
     List<Individual> newIndividuals = Lists.newArrayList();
 
-    for (int i = 0; i < oldRankedIndividuals.size() - 1; i++) {
+    newIndividuals.add(oldRankedIndividuals.get(0));
+    for (int i = 0; i < oldRankedIndividuals.size() - 2; i++) {
       newIndividuals.add(Population.reproduce(oldRankedIndividuals.get(i), oldRankedIndividuals.get(i + 1)));
     }
     newIndividuals.add(Individual.newRandomIndividual());

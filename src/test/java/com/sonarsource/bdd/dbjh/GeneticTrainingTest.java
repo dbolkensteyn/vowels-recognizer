@@ -10,8 +10,8 @@ import java.util.List;
 
 public class GeneticTrainingTest {
 
-  private static final int POPULATION_SIZE = 2000;
-  private static final int EVOLUTION_STEPS = 1;
+  private static final int POPULATION_SIZE = 6;
+  private static final int EVOLUTION_STEPS = 20;
 
   private final FormantExtractor formantExtractor = new FormantExtractor();
 
