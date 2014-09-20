@@ -35,47 +35,22 @@ public class Population {
 
   public static Individual reproduce(Individual individual1, Individual individual2) {
     // Cross-over
-    int i1 = mean(individual1.i1(), individual2.i1());
-    int i2 = mean(individual1.i2(), individual2.i2());
-
-    int o1 = mean(individual1.o1(), individual2.o1());
-    int o2 = mean(individual1.o2(), individual2.o2());
-
-    int a1 = mean(individual1.a1(), individual2.a1());
-    int a2 = mean(individual1.a2(), individual2.a2());
+    int i = mean(individual1.i(), individual2.i());
+    int o = mean(individual1.o(), individual2.o());
+    int a = mean(individual1.a(), individual2.a());
 
     // Mutation
     if (random.nextInt(100) <= MUTATION_RATE) {
-      i1 = Individual.randomFormantFrequency();
-      if (i2 <= i1) {
-        i2 = Individual.randomFormantFrequency(i1);
-      }
+      i = Individual.randomFormantFrequency();
     }
     if (random.nextInt(100) <= MUTATION_RATE) {
-      i2 = Individual.randomFormantFrequency(i1);
+      o = Individual.randomFormantFrequency();
+    }
+    if (random.nextInt(100) <= MUTATION_RATE) {
+      a = Individual.randomFormantFrequency();
     }
 
-    if (random.nextInt(100) <= MUTATION_RATE) {
-      o1 = Individual.randomFormantFrequency();
-      if (o2 <= o1) {
-        o2 = Individual.randomFormantFrequency(o1);
-      }
-    }
-    if (random.nextInt(100) <= MUTATION_RATE) {
-      o2 = Individual.randomFormantFrequency(o1);
-    }
-
-    if (random.nextInt(100) <= MUTATION_RATE) {
-      a1 = Individual.randomFormantFrequency();
-      if (a2 <= a1) {
-        a2 = Individual.randomFormantFrequency(a1);
-      }
-    }
-    if (random.nextInt(100) <= MUTATION_RATE) {
-      a2 = Individual.randomFormantFrequency(a1);
-    }
-
-    return new Individual(i1, i2, o1, o2, a1, a2);
+    return new Individual(i, o, a);
   }
 
   private static int mean(int f1, int f2) {
